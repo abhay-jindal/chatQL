@@ -6,7 +6,14 @@ module.exports = {
         createdAt: (parent) => parent.createdAt.toISOString(),
     },
     User: {
-        createdAt: (parent) => parent.createdAt.toISOString(),
+        // createdAt: (parent) => parent.createdAt.toISOString(),
+        latestMessage: (parent) => {
+            // console.log(parent)
+            console.log('--------------------------------')
+            return {
+                content: 'e'
+            }
+        }
     },
     Query: {
         ...userResolvers.Query,

@@ -6,7 +6,7 @@ export default function DynamicRoute(props) {
    
 
     if (props.authenticated && !user) {
-        return <Redirect to="/" />
+        return <Redirect to="/account" />
     } else if (props.guest && user) {
         return <Redirect to="/dashboard" />
     } else {

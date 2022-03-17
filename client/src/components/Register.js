@@ -1,15 +1,9 @@
 import { useState } from 'react'
-import { Row, Col, Form, Button, Image } from 'react-bootstrap'
-import { gql, useMutation } from '@apollo/client';
+import { Col, Form, Button, Image } from 'react-bootstrap'
+import { useMutation } from '@apollo/client';
 import toast from "react-hot-toast"; 
-
-const REGISTER_USER = gql`
-    mutation register($username: String! $email:String! $password: String! $confirmPassword: String!) {
-        register(username: $username email: $email password: $password confirmPassword: $confirmPassword) {
-            username createdAt
-        }
-    }
-`;
+import style from '../utils/style/account.module.css';
+import { REGISTER_USER}  from '../utils/ApolloService/Mutations'
 
 export default function Register(props) {
     const [ values, setValues ] = useState({
@@ -40,29 +34,27 @@ export default function Register(props) {
     };
     
     return (
-        <Row className="justify-content-center mt-5">
-        <Col xs={11} sm={8} md={8} lg={4}>
+        <Col xs={12} sm={9} md={6} lg={3}>
            
-            <div className="image d-flex flex-column p-0 align-items-center"> 
-                <Image src="https://img.icons8.com/color/50/000000/chat--v3.png" />
-                <div className="name m-2">Register to chatQL</div>
+            <div className="image d-flex flex-column align-items-center"> 
+                <Image src="https://res.cloudinary.com/chatql/image/upload/chat--v3_j7wurk.png" />
+                <h1 className=" m-2">Register to chatQL</h1>
             </div>
 
             <hr />
-           
-            <Form onSubmit={handleSubmit}>
 
-                <Form.Group className="my-4 text">
+            <Form className={style.InputText} onSubmit={handleSubmit}>
+                <Form.Group className="mb-4 text">
                     <Form.Floating>
                         <Form.Control
                         type="text"
                         name="email"
-                        placeholder='Email address'
+                        placeholder='name@example.com'
                         autoComplete='off'
                         isInvalid={ errors?.email }
-                        onChange={handleChange}
+                        onBlur={handleChange}
                         />
-                        <label htmlFor="floatingInputCustom">Email address</label>
+                        <label htmlFor="email">name@example.com</label>
                     </Form.Floating>
                     <p className="mt-1 text-danger">{ errors?.email && <i className="mx-1 fa-solid fa-sm fa-circle-exclamation"></i> } { errors.email }</p>
                 </Form.Group>
@@ -75,12 +67,11 @@ export default function Register(props) {
                         name="username"
                         autoComplete='off'
                         isInvalid={ errors.username }
-                        onChange={handleChange}
+                        onBlur={handleChange}
                         />
-                        <label htmlFor="floatingInputCustom">Username</label>
+                        <label htmlFor="username">Username</label>
                     </Form.Floating>
                     <p className="mt-1 text-danger">{ errors?.username && <i className="mx-1 fa-solid fa-sm fa-circle-exclamation"></i> } { errors.username }</p>
-                   
                 </Form.Group>
                 
                 <Form.Group className="mb-4 text">
@@ -91,14 +82,12 @@ export default function Register(props) {
                             name="password"
                             autoComplete='off'
                             isInvalid={ errors.password }
-                            onChange={handleChange}
+                            onBlur={handleChange}
                         />
-                        <label htmlFor="floatingInputCustom">Password</label>
+                        <label htmlFor="password">Password</label>
                     </Form.Floating>
-                    <p className="mt-1 text-danger">{ errors?.password && <i className="mx-1 fa-solid fa-sm fa-circle-exclamation"></i> } { errors.password }</p>
                 </Form.Group>
 
-            
                 <Form.Group className="mb-4 text">
                     <Form.Floating>
                         <Form.Control
@@ -107,22 +96,28 @@ export default function Register(props) {
                         placeholder='Confirm password'
                         autoComplete='off'
                         isInvalid={ errors.confirmPassword }
-                        onChange={handleChange}
+                        onBlur={handleChange}
                         />
-                        <label htmlFor="floatingInputCustom">Confirm password</label>
+                        <label htmlFor="confirmPassword">Confirm password</label>
                     </Form.Floating>
                     <p className="mt-1 text-danger">{ errors?.confirmPassword && <i className="mx-1 fa-solid fa-sm fa-circle-exclamation"></i> } { errors.confirmPassword }</p>
                 </Form.Group>
 
-                <Button className='text-primary px-4 btn1' variant="light" onClick={() => props.changeAction('LOGIN')} >
+                <div className=' my-4' style={{  textAlign: 'center'}}>
+                    <hr />
+                    <div className='mb-1'>
+                        <Image src="https://res.cloudinary.com/chatql/image/upload/privacy-icon_kdoel8.png" height={30}/>
+                        </div>
+                    <small > Your chatQL ID information is used to allow you to sign in securely and access your data.</small>
+                    </div>
+                <Button className='text-primary px-3' variant="light" onClick={() => props.changeAction('LOGIN')} >
                     Log in instead
                 </Button>
-                <Button className='px-4 btn1' style={{ float: 'right'}} variant="dark" type="submit"  disabled={loading}>
+                <Button className='px-4' style={{ float: 'right'}} variant="dark" type="submit"  disabled={loading}>
                     {loading ? 'loading...' : 'Register'}
                 </Button>
 
             </Form>
         </Col>
-        </Row>
     )
 }

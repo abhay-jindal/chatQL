@@ -1,34 +1,34 @@
-import Navbar from '../components/Navbar'
-import AccountPanel from '../components/AccountPanel'
-import { Fragment } from 'react'
-import { useAuthDispatch } from '../context/auth'
-import { useMessageDispatch } from '../context/message'
-import { useHistory } from 'react-router-dom'
+import { useMemo, useState } from "react";
+import { Row } from "react-bootstrap";
+import Login from "../components/Login";
+import Register from "../components/Register";
+import style from '../utils/style/account.module.css';
 
-export default function Account() {
 
-    const userDispatch = useAuthDispatch()
-    const messageDispatch = useMessageDispatch()
-    const history = useHistory()
+export default function Account({ match }) {
+    const state = match?.params?.action.toUpperCase() || 'LOGIN'
 
-    const handleClick = (name, event) => {
-        event.preventDefault()
-        switch (name) {  
-            case '/':
-                userDispatch({ type: 'LOGOUT' })
-                window.location.href = "/"
-                break;
-            case '/account':
-                break;
+    const [ action, setAction ] = useState( state === 'LOGIN' ? 'LOGIN' : 'REGISTER')
+
+    /* change login, register component on the basis of action state defined above */
+    const switchAuthComponent = () => {
+        switch (action) {
+            case 'LOGIN':
+                return <Login changeAction={setAction}/>
+            case 'REGISTER':
+                return <Register changeAction={setAction}/>
             default:
-                history.replace({ pathname: name, state:{isActive: true}})
+                return <h1>nn</h1>
         }
-    };
+    }
+
+    console.log(match)
+    // console.log(match)
 
     return (
-        <Fragment>
-            <Navbar handleClick={handleClick}/>
-            <AccountPanel />
-        </Fragment> 
+        <Row className={`justify-content-center my-5 mx-0 ${style.AccountHeader}` } >
+            {switchAuthComponent()}
+            {/* <h2>{match.params.action}</h2> */}
+        </Row>
     )
 }

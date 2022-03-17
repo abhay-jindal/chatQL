@@ -67,7 +67,6 @@ export default function Users() {
 
             <Col xs={12} md={4} style={{ backgroundColor: '#ebecf0'}} className="users-box p-0 flex-wrap d-md-block d-flex">
                 <Col md={12} xs={12} className="search-box p-0 d-md-block"><SearchBar /></Col>
-                <hr />
                 <div className='user-markup d-md-block d-flex'>{usersMarkup}</div>
             </Col>          
         </Fragment>

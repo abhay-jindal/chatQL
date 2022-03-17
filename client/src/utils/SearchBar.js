@@ -1,4 +1,4 @@
-import { useState, Fragment } from "react";
+import { useState, Fragment, useCallback } from "react";
 import { Container } from "react-bootstrap";
 import { AsyncTypeahead } from 'react-bootstrap-typeahead';
 import { useMessageState, useMessageDispatch } from '../context/message'
@@ -9,13 +9,14 @@ export default function SearchBar () {
   const [options, setOptions] = useState([]);
 
   const handleSearch = (searchKey, data=users) => {
+    console.log(searchKey)
 
     const options =  data.filter(user => {
       return user.username.includes(searchKey)
     })
 
     setOptions(options)
-  }
+  };
 
   // Bypass client-side filtering by returning `true`. Results are already
   // filtered by the search endpoint, so no need to do it again.
@@ -33,7 +34,7 @@ export default function SearchBar () {
       delay={800}
       emptyLabel="No matching people or spaces."
       ignoreDiacritics={true}
-      placeholder="Search user..."
+      placeholder="Search conversation"
       promptText="Searching"
       searchText="Searching"
       onSearch={handleSearch}
@@ -55,5 +56,6 @@ export default function SearchBar () {
         </Fragment>
       )}
     />
+ 
   );
 };

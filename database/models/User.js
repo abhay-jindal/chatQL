@@ -52,7 +52,7 @@ module.exports = (sequelize, DataTypes) => {
   * @param errors An errors object (not required)
   */
   User.findByCredentials = async (username, password='', errors={}) => {
-    const user = await User.findOne({ where: { username }})
+    const user = await User.findOne({ raw: true, where: { username }})
                 
     if (!user) {
       errors.username = "User not found!"

@@ -5,10 +5,6 @@ import { Fragment, useCallback } from 'react';
 
 const configOptions = [
     {
-        label: 'Account',
-        icon: <i className="fa-solid fa-lg mx-3 fa-user"></i>
-    },
-    {
         label: 'Notifications',
         icon: <i className="fa-solid fa-lg mx-3 fa-bell"></i>
     },

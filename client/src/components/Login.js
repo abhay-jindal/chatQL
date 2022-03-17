@@ -1,23 +1,15 @@
 import { useState } from 'react'
 import { Row, Col, Form, Button, Image } from 'react-bootstrap'
-import { gql, useLazyQuery } from '@apollo/client'
+import { useLazyQuery } from '@apollo/client'
 import { useAuthDispatch } from '../context/auth'
-
-const LOGIN_USER = gql`
-  query login($username: String!, $password: String!) {
-    login(username: $username, password: $password) {
-      username
-      imageURL
-      createdAt
-      token
-    }
-  }
-`
+import { LOGIN_USER } from '../utils/ApolloService/Queries'
+import style from '../utils/style/account.module.css';
 
 export default function Login(props) {
     const [ values, setValues ] = useState({
         username: '',
-        password: ''
+        password: '',
+        remember: 'off'
     })
     const [ errors, setErrors ] = useState({})
     const dispatch = useAuthDispatch()
@@ -32,28 +24,33 @@ export default function Login(props) {
 
     const handleSubmit = (event) => {
         event.preventDefault()
-        loginUser({ variables: values })  
+        loginUser({ variables: values })
     }
 
     const handleChange = (event) => {
         let { name, value } = event.target
         setValues({ ...values, [name]: value })
-        setErrors(errors => ( { ...errors, [name]: null } ))
+        // setErrors(errors => ( { ...errors, [name]: null } ))
     };
 
+    // const loginValues = {username: '', password: ''}
+    // const { handleChange, handleSubmit, values } = useFormHook(loginUser, loginValues)
+
     return (
-        <Row className="justify-content-center mt-5">
-        <Col xs={11} sm={12} md={9} lg={4}>
-            <div className="image d-flex flex-column p-0 align-items-center"> 
-                <Image src="https://img.icons8.com/color/50/000000/chat--v3.png" />
-                <div className="name m-2">Login to chatQL</div>
+        // <Fragment>
+        <Col xs={12} sm={9} md={6} lg={3}>
+            <div className=" d-flex flex-column align-items-center"> 
+                <Image src="https://res.cloudinary.com/chatql/image/upload/chat--v3_j7wurk.png" />
+                <h1 className="m-2">Login to chatQL</h1>
             </div>
 
             <hr />
+
+           
             
-            <Form onSubmit={handleSubmit}> 
+            <Form className={style.InputText} onSubmit={handleSubmit}> 
                 
-                <Form.Group className="my-4 text">
+                <Form.Group className="my-4">
                     <Form.Floating>
                         <Form.Control
                         type="text"
@@ -61,36 +58,38 @@ export default function Login(props) {
                         placeholder='Username'
                         autoComplete='off'
                         isInvalid={ errors?.username }
-                        onChange={handleChange}
+                        onBlur={handleChange}
                         />
-                        <label htmlFor="floatingInputCustom">Username</label>
+                        <label htmlFor="username">Username</label>
                     </Form.Floating>
                     <p className="mt-1 text-danger">{ errors?.username && <i className="mx-1 fa-solid fa-sm fa-circle-exclamation"></i> } { errors.username }</p>
                 </Form.Group>
 
-                <Form.Group className="mb-4 text">
+                <Form.Group className="mb-4">
                     <Form.Floating>
                         <Form.Control
                         type="password"
                         placeholder='Password'
                         name="password"
-                        autoComplete='off'
                         isInvalid={ errors.password }
-                        onChange={handleChange}
+                        onBlur={handleChange}
                         />
-                        <label htmlFor="floatingInputCustom">Password</label>
+                        <label htmlFor="password">Password</label>
                     </Form.Floating>
                     <p className="mt-1 text-danger">{ errors?.password && <i className="mx-1 fa-solid fa-sm fa-circle-exclamation"></i> } { errors.password }</p>
                 </Form.Group>
+
+                <Form.Group as={Row} className="mb-4 mx-1">
+                    <Form.Check label="Remember me" name="remember" onChange={handleChange} />  
+                </Form.Group>
                 
-                <Button className='text-primary px-4 btn1' variant="light" onClick={() => props.changeAction('REGISTER')} >
+                <Button className='text-primary px-3' variant="light" onClick={() => props.changeAction('REGISTER')} >
                     Create account
                 </Button>
-                <Button className='px-4 btn1' style={{ float: 'right'}} variant="dark" type="submit"  disabled={loading}>
+                <Button className='px-4' style={{ float: 'right'}} variant="dark" type="submit"  disabled={loading}>
                     {loading ? 'loading...' : 'Log In'}
                 </Button>
             </Form>
         </Col>
-        </Row>
     )
 }
